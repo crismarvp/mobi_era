@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="SubscriptionDS" targetNamespace="http://tempuri.org/DavidDevidDS.xsd" xmlns:mstns="http://tempuri.org/DavidDevidDS.xsd" xmlns="http://tempuri.org/DavidDevidDS.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections>
+          <Connection AppSettingsObjectName="Settings" AppSettingsPropertyName="via_movil_devConnectionString" IsAppSettingsProperty="true" Modifier="Assembly" Name="via_movil_devConnectionString (Settings)" ParameterPrefix="@" PropertyReference="ApplicationSettings.Mobiera.Properties.Settings.GlobalReference.Default.via_movil_devConnectionString" Provider="System.Data.SqlClient" />
+        </Connections>
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="SubscriptionDS" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:Generator_UserDSName="SubscriptionDS" msprop:Generator_DataSetName="SubscriptionDS" msprop:EnableTableAdapterManager="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="suscription" msprop:Generator_UserTableName="suscription" msprop:Generator_RowDeletedName="suscriptionRowDeleted" msprop:Generator_RowChangedName="suscriptionRowChanged" msprop:Generator_RowClassName="suscriptionRow" msprop:Generator_RowChangingName="suscriptionRowChanging" msprop:Generator_RowEvArgName="suscriptionRowChangeEvent" msprop:Generator_RowEvHandlerName="suscriptionRowChangeEventHandler" msprop:Generator_TableClassName="suscriptionDataTable" msprop:Generator_TableVarName="tablesuscription" msprop:Generator_RowDeletingName="suscriptionRowDeleting" msprop:Generator_TablePropName="suscription">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="suscription_id" msdata:AutoIncrementSeed="-1" msdata:AutoIncrementStep="-1" msprop:Generator_UserColumnName="suscription_id" msprop:Generator_ColumnPropNameInRow="suscription_id" msprop:Generator_ColumnVarNameInTable="columnsuscription_id" msprop:Generator_ColumnPropNameInTable="suscription_idColumn" type="xs:long" />
+              <xs:element name="package_id" msprop:Generator_UserColumnName="package_id" msprop:Generator_ColumnPropNameInRow="package_id" msprop:Generator_ColumnVarNameInTable="columnpackage_id" msprop:Generator_ColumnPropNameInTable="package_idColumn" type="xs:int" minOccurs="0" />
+              <xs:element name="msisdn" msprop:Generator_UserColumnName="msisdn" msprop:Generator_ColumnPropNameInRow="msisdn" msprop:Generator_ColumnVarNameInTable="columnmsisdn" msprop:Generator_ColumnPropNameInTable="msisdnColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="last_charge_order_no" msprop:Generator_UserColumnName="last_charge_order_no" msprop:Generator_ColumnPropNameInRow="last_charge_order_no" msprop:Generator_ColumnVarNameInTable="columnlast_charge_order_no" msprop:Generator_ColumnPropNameInTable="last_charge_order_noColumn" type="xs:short" minOccurs="0" />
+              <xs:element name="last_charge_msg_date" msprop:Generator_UserColumnName="last_charge_msg_date" msprop:Generator_ColumnPropNameInRow="last_charge_msg_date" msprop:Generator_ColumnVarNameInTable="columnlast_charge_msg_date" msprop:Generator_ColumnPropNameInTable="last_charge_msg_dateColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="last_charge_date" msprop:Generator_UserColumnName="last_charge_date" msprop:Generator_ColumnPropNameInRow="last_charge_date" msprop:Generator_ColumnVarNameInTable="columnlast_charge_date" msprop:Generator_ColumnPropNameInTable="last_charge_dateColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="is_new" msprop:Generator_UserColumnName="is_new" msprop:Generator_ColumnPropNameInRow="is_new" msprop:Generator_ColumnVarNameInTable="columnis_new" msprop:Generator_ColumnPropNameInTable="is_newColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="active" msprop:Generator_UserColumnName="active" msprop:Generator_ColumnPropNameInRow="active" msprop:Generator_ColumnVarNameInTable="columnactive" msprop:Generator_ColumnPropNameInTable="activeColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="registered_on" msprop:Generator_UserColumnName="registered_on" msprop:Generator_ColumnPropNameInRow="registered_on" msprop:Generator_ColumnVarNameInTable="columnregistered_on" msprop:Generator_ColumnPropNameInTable="registered_onColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="unregistered_on" msprop:Generator_UserColumnName="unregistered_on" msprop:Generator_ColumnPropNameInRow="unregistered_on" msprop:Generator_ColumnVarNameInTable="columnunregistered_on" msprop:Generator_ColumnPropNameInTable="unregistered_onColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="last_attempt_dispatch_no" msprop:Generator_UserColumnName="last_attempt_dispatch_no" msprop:Generator_ColumnPropNameInRow="last_attempt_dispatch_no" msprop:Generator_ColumnVarNameInTable="columnlast_attempt_dispatch_no" msprop:Generator_ColumnPropNameInTable="last_attempt_dispatch_noColumn" type="xs:short" minOccurs="0" />
+              <xs:element name="last_attempt_no" msprop:Generator_UserColumnName="last_attempt_no" msprop:Generator_ColumnPropNameInRow="last_attempt_no" msprop:Generator_ColumnVarNameInTable="columnlast_attempt_no" msprop:Generator_ColumnPropNameInTable="last_attempt_noColumn" type="xs:short" minOccurs="0" />
+              <xs:element name="last_attempt_date" msprop:Generator_UserColumnName="last_attempt_date" msprop:Generator_ColumnPropNameInRow="last_attempt_date" msprop:Generator_ColumnVarNameInTable="columnlast_attempt_date" msprop:Generator_ColumnPropNameInTable="last_attempt_dateColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="last_attempt_weekly_failed" msprop:Generator_UserColumnName="last_attempt_weekly_failed" msprop:Generator_ColumnPropNameInRow="last_attempt_weekly_failed" msprop:Generator_ColumnVarNameInTable="columnlast_attempt_weekly_failed" msprop:Generator_ColumnPropNameInTable="last_attempt_weekly_failedColumn" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="1" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="operator_subscription" msprop:Generator_UserTableName="operator_subscription" msprop:Generator_RowDeletedName="operator_subscriptionRowDeleted" msprop:Generator_RowChangedName="operator_subscriptionRowChanged" msprop:Generator_RowClassName="operator_subscriptionRow" msprop:Generator_RowChangingName="operator_subscriptionRowChanging" msprop:Generator_RowEvArgName="operator_subscriptionRowChangeEvent" msprop:Generator_RowEvHandlerName="operator_subscriptionRowChangeEventHandler" msprop:Generator_TableClassName="operator_subscriptionDataTable" msprop:Generator_TableVarName="tableoperator_subscription" msprop:Generator_RowDeletingName="operator_subscriptionRowDeleting" msprop:Generator_TablePropName="operator_subscription">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="operator_subscription_id" msprop:Generator_UserColumnName="operator_subscription_id" msprop:Generator_ColumnVarNameInTable="columnoperator_subscription_id" msprop:Generator_ColumnPropNameInRow="operator_subscription_id" msprop:Generator_ColumnPropNameInTable="operator_subscription_idColumn" type="xs:long" />
+              <xs:element name="suscription_id" msprop:Generator_UserColumnName="suscription_id" msprop:Generator_ColumnVarNameInTable="columnsuscription_id" msprop:Generator_ColumnPropNameInRow="suscription_id" msprop:Generator_ColumnPropNameInTable="suscription_idColumn" type="xs:long" />
+              <xs:element name="expire_on" msprop:Generator_UserColumnName="expire_on" msprop:Generator_ColumnVarNameInTable="columnexpire_on" msprop:Generator_ColumnPropNameInRow="expire_on" msprop:Generator_ColumnPropNameInTable="expire_onColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="start_on" msprop:Generator_UserColumnName="start_on" msprop:Generator_ColumnVarNameInTable="columnstart_on" msprop:Generator_ColumnPropNameInRow="start_on" msprop:Generator_ColumnPropNameInTable="start_onColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="created_on" msprop:Generator_UserColumnName="created_on" msprop:Generator_ColumnVarNameInTable="columncreated_on" msprop:Generator_ColumnPropNameInRow="created_on" msprop:Generator_ColumnPropNameInTable="created_onColumn" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="operator_id" msprop:Generator_UserColumnName="operator_id" msprop:Generator_ColumnPropNameInRow="operator_id" msprop:Generator_ColumnVarNameInTable="columnoperator_id" msprop:Generator_ColumnPropNameInTable="operator_idColumn" type="xs:int" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+    <xs:unique name="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:suscription" />
+      <xs:field xpath="mstns:suscription_id" />
+    </xs:unique>
+    <xs:unique name="operator_subscription_Constraint1" msdata:ConstraintName="Constraint1" msdata:PrimaryKey="true">
+      <xs:selector xpath=".//mstns:operator_subscription" />
+      <xs:field xpath="mstns:operator_id" />
+      <xs:field xpath="mstns:suscription_id" />
+      <xs:field xpath="mstns:operator_subscription_id" />
+    </xs:unique>
+  </xs:element>
+</xs:schema>

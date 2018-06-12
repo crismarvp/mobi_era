@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{2C6C8AC4-FA70-4365-BDA6-72A4700235F0}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Mobiera</RootNamespace>
+    <AssemblyName>Mobiera</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Apache.NMS, Version=1.7.1.3894, Culture=neutral, PublicKeyToken=82756feee3957618, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Source\Libraries\3rdParty\Apache.NMS.dll</HintPath>
+    </Reference>
+    <Reference Include="Apache.NMS.ActiveMQ, Version=1.7.1.3924, Culture=neutral, PublicKeyToken=82756feee3957618, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Source\Libraries\3rdParty\Apache.NMS.ActiveMQ.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=3.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Source\Libraries\3rdParty\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BOSubsOptin.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="schemas\SubscriptionDS.cs">
+      <DependentUpon>SubscriptionDS.xsd</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="schemas\SubscriptionDS.Designer.cs">
+      <DependentUpon>SubscriptionDS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="schemas\SubscriptionDS1.Designer.cs" />
+    <Compile Include="schemas\SubscriptionDS2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SubscriptionDS.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Source\Common\VMCommon\VMCommon.csproj">
+      <Project>{C269718B-6648-4E2E-910F-50A5381DD908}</Project>
+      <Name>VMCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Libraries\Otsol\Otsol.BusinessObject\Otsol.BusinessObject.csproj">
+      <Project>{D16C856B-F42A-46DE-8516-A451277FCDDE}</Project>
+      <Name>Otsol.BusinessObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Libraries\Otsol\Otsol.DataAccess\Otsol.DataAccess.csproj">
+      <Project>{3604A34F-C878-4BB1-9283-D97368DD0B52}</Project>
+      <Name>Otsol.DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Source\Libraries\Otsol\Otsol.Support\Otsol.Support.csproj">
+      <Project>{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}</Project>
+      <Name>Otsol.Support</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="schemas\SubscriptionDS.xsc">
+      <DependentUpon>SubscriptionDS.xsd</DependentUpon>
+    </None>
+    <None Include="schemas\SubscriptionDS.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>SubscriptionDS2.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="schemas\SubscriptionDS.xss">
+      <DependentUpon>SubscriptionDS.xsd</DependentUpon>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
