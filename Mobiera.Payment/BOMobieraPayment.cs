@@ -572,13 +572,18 @@ namespace Mobiera.Payment
            Double DminHour = Double.Parse(minHour);
 
            DateTime horaMinUtc = DateTime.UtcNow.Date.AddHours(DminHour);
-           
+     
 
+           int IlocalTime = IminHour + IdiffGmt;
+           string localTime = IlocalTime.ToString();
+           Double DlocalTime = Double.Parse(localTime);
+
+           DateTime horaMinLocal = DateTime.Now.Date.AddHours(DlocalTime);
 
         try
             {
-                
-                if (created_on > DateTime.UtcNow.AddMinutes(-60))
+
+                if (created_on.AddHours(DdiffGmt) > DateTime.Now.AddMinutes(-60))
                 {
                 priority = "high";
 
@@ -587,9 +592,14 @@ namespace Mobiera.Payment
                 else
                 {
                     priority = "low";
-                    if (created_on < horaMinUtc)
+
+                    if (created_on.AddHours(DdiffGmt) < horaMinLocal) 
                     {
                         plannedOn = horaMinUtc;
+                    }
+                    else if (created_on.AddHours(DdiffGmt) > horaMinLocal & created_on.AddHours(DdiffGmt) < horaMinLocal.AddHours(12))
+                    {
+                        plannedOn = DateTime.UtcNow;
                     }
                      else
                     {
