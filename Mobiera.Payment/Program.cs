@@ -47,7 +47,7 @@ namespace Mobiera.Payment
             message = ((Apache.NMS.ActiveMQ.Commands.ActiveMQTextMessage)(receivedMsg));
             JObject data = JObject.Parse(((Apache.NMS.ActiveMQ.Commands.ActiveMQTextMessage)(receivedMsg)).Text);
             BOMobieraPayment BO = new BOMobieraPayment();
-            //Acá haces la llamada a RegisterPayment y le pasas la data (JSON)
+
             BO.RegisterPayment(data);
             
         }

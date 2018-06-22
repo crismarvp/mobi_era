@@ -18,7 +18,7 @@ namespace Mobiera.verifyContent
         public override void InitValues()
         {
             base.InitValues();
-            errorProcessName = "Entel.VerifyContent";
+            errorProcessName = "Mobiera.VerifyContent";
             ApplicationName = "MOBIERA";
 
         }

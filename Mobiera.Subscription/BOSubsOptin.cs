@@ -12,7 +12,7 @@ using Otsol.Support.Data;
 using Otsol.DataAccess;
 using System.Data.SqlClient;
 using System.Configuration;
-//using Mobiera.schemas;
+
 
 namespace Mobiera
 {
@@ -23,13 +23,12 @@ namespace Mobiera
             //publisher = new Publisher("dispatchQueue");
             
         }
-        string queueDestination = "dispatchQueue";
+        //string queueDestination = "dispatchQueue";
         string PROC_NOTIFY;
         string fullDateFormat;
         string shortDateFormat;
         string operator_service_id;
         string service_identifier_id;
-        string transactionUUID;
         string msisdn;
         string endUserId;
         string identifier_id;
@@ -39,106 +38,61 @@ namespace Mobiera
         string reference_code;
         string tracking_param;
         string periodicity;
-        public long mobiera_notification_id;
         public long mobiera_subscription_notification_id;
         Int64 suscription_id;
         Int32 package_id;
         DateTime start_on;
         DateTime expire_on;
         string operator_subscription_id;
-        string INACTIVE_REASON;
         string resource_url;
-
         DateTime created_on;
-        String url;
-      
         string subscription_operation_status;
-        
+        string url;
    
-        string is_new;  
-        string active;  
-        DateTime registered_on ;  
-        DateTime last_attempt_date ;
-        string entryChannel ;
-        string subscriptionOperationStatus;
-        DateTime unregistered_on;
-        Int32 operator_id;
-
 
         public override void InitValues()
         {
             base.InitValues();
             errorProcessName = "Mobiera.SubsOptin";
             ApplicationName = "MOBIERA";
-            //priority = ConfigurationManager.AppSettings["priority"];
-            //renew_context = ConfigurationManager.AppSettings["context"];
-
         }
-
 
         public void RegisterOptin(JObject data)
         {
             Exception innerEx = null;
             try
             {
-                //JObject subscription = JsonUtil.AsJObject(data, "subscription");
-                //msisdn = JsonUtil.AsString(subscription, "endUserId", "");
-                
-                //1. Insertas notificación.
                 RegisterSubscriptionNotification(data);
 
-                //2. SI subscriptionOperationStatus == "subscribed" haces lo que está abajo.
-               //  public void UpdateSubscription()
-                //subscription_operation_status
                 if (subscription_operation_status == "Subscribed")
                 {
-                    //Aquí obtienes el dataset desde la función get_subscription_data (la segunda tabla es operator_suscription)
                     DataSet dsData = get_subscription_data();
+
                     if (dsData.Tables[0].Rows.Count == 0)
                     {
-                        //ErrorAssignation(ERROR_CODE.Entel_OperatorProduct_Not_Registered, "Entel Operator_product not registered", string.Format("WRONG INFORMATION [operator_product_id={0}]", JsonUtil.AsInteger(data, "productId")), data.ToString());
-                        //throw new Exception();
-                        ErrorAssignation(ERROR_CODE.Mobiera_OperatorProduct_Not_Registered, "Mobiera Operator_product not registered", string.Format("WRONG INFORMATION [operator_product_id={0}]", JsonUtil.AsInteger(data, "subscriptionId")), data.ToString());
+                        ErrorAssignation(ERROR_CODE.Mobiera_OperatorProduct_Not_Registered,
+                        "Mobiera Operator_product not registered", 
+                        string.Format("WRONG INFORMATION [operator_product_id={0}]", 
+                        JsonUtil.AsInteger(data, "subscriptionId")), data.ToString());
                         
                         throw new Exception();
                     }
+
                     else
                     {
-                        //En la primera tabla del dataset dsData está el campo package_id
-                        //Lo mismo tienes que hacer para el suscription_id, sólo que está en la segunda tabla
-                        // Primera tabla: Tables[0]    ... segunda tabla Tables[1]
-                        
-
                         package_id = DataUtil.AsInteger(dsData.Tables[0].Rows[0], "package_id", false);
-                        
-                        //no puedes asignar un valor que no tienes.
-                        //si es una nueva suscripción, eso quiere decir que aún no has registrado 
-                        //en la tabla suscription, por lo tanto, no tienes el suscription_id
-                        //la siguiente línea de código no sé que hace aquí. 
 
-                        //suscription_id = DataUtil.AsInteger(dsData.Tables[1].Rows[0], "suscription_id", false);
-                       
                         if (dsData.Tables[1].Rows.Count == 0)
                         {
-                            //llamas a la rutina RegisterSuscription
                             RegisterSuscription();
-                            //RegisterContentMessage(data);
-                            //SendToQueue();
                         }
                     }
-
                 }
-                
+
                 else
                 {
                     UpdateSubscription();
                 }
-                //3 Else al if en el punto 2 (si subscriptionOperationStatus != "subscribed")
-                // llamas a la rutina UpdateSubscription 
-                
-                //Send_Notification();
-
-
             }
             catch (Exception ex)
             {
@@ -155,6 +109,7 @@ namespace Mobiera
                 }
             }
         }
+
         public long RegisterSubscriptionNotification(JObject data)
         {
             PROC_NOTIFY = "spu_insert_mobiera_subscription_notification";
@@ -179,14 +134,14 @@ namespace Mobiera
             string str_start_on = JsonUtil.AsString(subscription, "subscriptionStartDateTime");
             str_start_on = str_start_on.Substring(0, 19);
             str_start_on = str_start_on.Replace("T", " ");
-            start_on = DataUtil.AsDateTime(str_start_on, fullDateFormat, DataUtil.AsDateTime(str_start_on, shortDateFormat, DateTime.MinValue, false), false);
+            start_on = DataUtil.AsDateTime(str_start_on, fullDateFormat, 
+            DataUtil.AsDateTime(str_start_on, shortDateFormat, DateTime.MinValue, false), false);
 
             string str_expire_on = JsonUtil.AsString(subscription, "subscriptionValidUntilDateTime");
             str_expire_on = str_expire_on.Substring(0, 19);
             str_expire_on = str_expire_on.Replace("T", " ");
-            expire_on = DataUtil.AsDateTime(str_expire_on, fullDateFormat, DataUtil.AsDateTime(str_expire_on, shortDateFormat, DateTime.MinValue, false), false);
-
-            //DateTime expire_on = JsonUtil.AsDateTime(subscription, "subscriptionValidUntilDateTime");
+            expire_on = DataUtil.AsDateTime(str_expire_on, fullDateFormat, 
+            DataUtil.AsDateTime(str_expire_on, shortDateFormat, DateTime.MinValue, false), false);
 
             operator_subscription_id = JsonUtil.AsString(subscription, "subscriptionId", "");
             resource_url = JsonUtil.AsString(subscription, "resourceURL", "");
@@ -194,19 +149,18 @@ namespace Mobiera
             string str_created_on = JsonUtil.AsString(subscription, "subscriptionStartDateTime");
             str_created_on = str_created_on.Substring(0, 19);
             str_created_on = str_created_on.Replace("T", " ");
-            created_on = DataUtil.AsDateTime(str_created_on, fullDateFormat, DataUtil.AsDateTime(str_created_on, shortDateFormat, DateTime.MinValue, false), false);
+            created_on = DataUtil.AsDateTime(str_created_on, fullDateFormat, 
+            DataUtil.AsDateTime(str_created_on, shortDateFormat, DateTime.MinValue, false), false);
 
             subscription_operation_status = JsonUtil.AsString(subscription, "subscriptionOperationStatus", "");
 
 
-           
             try
             {
                 SqlParameter[] parameters = new SqlParameter[18];
 
                 parameters[0] = new SqlParameter("@mobiera_subscription_notification_id", DbType.Int64);
                 parameters[0].Value = mobiera_subscription_notification_id;
-
                 parameters[1] = new SqlParameter("@operator_service_id", DbType.String);
                 parameters[1].Value = operator_service_id;
                 parameters[2] = new SqlParameter("@service_identifier_id", DbType.String);
@@ -242,25 +196,15 @@ namespace Mobiera
                 parameters[17] = new SqlParameter("@created_on", DbType.DateTime);
                 parameters[17].Value = created_on;
 
-
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, PROC_NOTIFY, parameters);
             }
             catch (Exception ex)
             {
                 ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, data.ToString());
-           
-            
+
                 throw ex;
             }
-
-
             return mobiera_subscription_notification_id;
-            
-            
-           
-            
-
-
         }
         
         public void UpdateSubscription()
@@ -296,7 +240,6 @@ namespace Mobiera
         {
             DataSet dsOptIn;
 
-         
                 SqlParameter[] parameters = new SqlParameter[4];
 
                 parameters[0] = new SqlParameter("@operator_service_id", DbType.Int32);
@@ -309,17 +252,9 @@ namespace Mobiera
                 parameters[3].Value = 5;
      
                 dsOptIn = GetDataSet(InstanceName, CommandType.StoredProcedure, "spu_get_data_mobiera", parameters);
-       
-            
-           
-
-              
+    
             return dsOptIn;
         }
-
-
-
-           
 
         public void RegisterSuscription()
         {
@@ -328,11 +263,7 @@ namespace Mobiera
             
             try
             {
-                //en la tabla suscription el campo suscription_id no es identity, por lo que lo 
-                //tienes que obtener con el siguiente código, obtener el máximo id de la tabla suscription
-                //reservar 1 ID.
-                suscription_id = GetNewId("suscription", 1);
-             
+                 suscription_id = GetNewId("suscription", 1);
             }
             catch (Exception ex)
             {
@@ -359,7 +290,6 @@ namespace Mobiera
                 parameters[6] = new SqlParameter("@last_attempt_date", DbType.DateTime);
                 parameters[6].Value = DateTime.UtcNow;
 
-                
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, spName, parameters);
 
                 SqlParameter[] parameters2 = new SqlParameter[6];
@@ -380,137 +310,11 @@ namespace Mobiera
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, spName2, parameters2);
             }
 
-
             catch (Exception ex)
             {
                 ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, url);
                 throw ex;
             }
-          
-
-            //return vm_notification_id;
         }
-
-         
-
-        public DataSet SaveSubscription()
-        {
-
-            DataSet dsSubscription = new Mobiera.schemas.SubscriptionDS();
-            DataTable dtSuscription = dsSubscription.Tables["suscription"];
-            DataTable dtOperator_Subscription = dsSubscription.Tables["operator_subscription"];
-
-            //SetSuscription(drRenew, expire_date, dtSuscription);
-            //SetDavidSuscription(drRenew, dtDavid_Suscription);
-            SetSubscription(dtSuscription, dtOperator_Subscription);
-            RegisterCharges(dsSubscription);
-            return dsSubscription;
-        }
-
-
-
-        //private void SetSuscription(DataRow drRenew, DateTime expire_date, DataTable dtSuscription)
-        //{
-        //    DataRow drSuscription = dtSuscription.NewRow();
-
-        //    drSuscription["suscription_id"] = drRenew["suscription_id"];
-
-        //    dtSuscription.Rows.Add(drSuscription);
-        //    drSuscription.AcceptChanges();
-
-        //    if (DataUtil.AsString(drRenew, "is_new") == "1")  // tabla suscription
-        //    {
-        //        if (DataUtil.AsString(drRenew, "suscription_status") == "1") // tabla david_suscription
-        //        {
-        //            drSuscription["is_new"] = "0";
-        //        }
-        //        else
-        //        {
-        //            DataSet dsCount;
-        //            SqlParameter[] parameters = new SqlParameter[1];
-        //            parameters[0] = new SqlParameter("@operator_subscription_id", DbType.Int64);
-        //            parameters[0].Value = DataUtil.AsString(drRenew, "operator_subscription_id");
-        //            dsCount = GetDataSet(InstanceName, CommandType.StoredProcedure, "SPU_GET_DAVID_DEBIT", parameters);
-
-        //            if (DataUtil.AsInteger(dsCount.Tables[0].Rows[0], "CUENTA", false) > 1)
-        //                drSuscription["is_new"] = "0";
-        //        }
-        //    }
-        //    drSuscription["last_attempt_date"] = this.DateToUTC(expire_date);
-        //}
-
-
-
-        private void SetSubscription(DataTable dtSuscription, DataTable dtOperator_Subscription)
-        {
-            DataRow drSuscription = dtSuscription.NewRow();
-            DataRow drOperator_S = dtOperator_Subscription.NewRow();
-
-
-            //Suscription
-            drSuscription["suscription_id"] = --suscription_id;
-            drSuscription["package_id"] = package_id;
-            drSuscription["msisdn"] = msisdn;
-            //drSuscription["last_charge_date"] = DateTime.UtcNow;
-            drSuscription["is_new"] = 1;
-            drSuscription["active"] = 1;
-            drSuscription["registered_on"] = DateTime.UtcNow;
-            drSuscription["last_attempt_date"] = DateTime.UtcNow;
-
-            //operator_subscription
-            drOperator_S["operator_subscription_id"] = operator_subscription_id;
-            drOperator_S["suscription_id"] = drSuscription["suscription_id"];
-            drOperator_S["operator_id"] = 5;
-            drOperator_S["start_on"] = start_on;
-            drOperator_S["expire_on"] = expire_on;
-            drOperator_S["created_on"] = DateTime.UtcNow;
-
-
-
-            dtSuscription.Rows.Add(drSuscription);
-            dtOperator_Subscription.Rows.Add(drOperator_S);
-
-        }
-        public void RegisterCharges(DataSet dsSubscription)
-        {
-            try
-            {
-                CreateDataRelation("suscription_operator_subscription", dsSubscription.Tables["suscription"].PrimaryKey, GetDataColumn(dsSubscription.Tables["operator_subscription"], "suscription_id"), Rule.None, Rule.Cascade);
-
-                DataSet dsChanges = dsSubscription.GetChanges();
-                ApplyChangesResult result = ApplyChanges(dsChanges);
-
-            }
-            catch (Exception ex)
-            {
-                ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, "");
-                //registered = false;
-                throw ex;
-            }
-        }
-
-        public override DBUpdater CreateDBUpdater(DataSet DS)
-        {
-            DataSet dsSchema = new Mobiera.schemas.SubscriptionDS();
-            DBUpdater updater = new DBUpdater(dsSchema);
-            return updater;
-        }
-
-        protected override void SetDataTableMappings(DataSet data, DBUpdater dbUpdater)
-        {
-            string[] auditFields = new string[] { "created_by", "created_on", "updated_by", "updated_on" };
-
-            if (data.Tables.Contains("suscription"))
-                dbUpdater.SetDataTableMapping(data.Tables["suscription"], "suscription", ConcurrencyMode.None, null, auditFields, null);
-
-            if (data.Tables.Contains("operator_subscription"))
-                dbUpdater.SetDataTableMapping(data.Tables["operator_subscription"], "operator_subscription", ConcurrencyMode.None, null, auditFields, null);
-
-        }
-    
-
-
-
     }
-
 }

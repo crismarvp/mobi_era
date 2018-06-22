@@ -23,7 +23,7 @@ namespace Mobiera.verifyContent
             BOVerifyContent bo = new BOVerifyContent();
             bo.verifyContentToSend();
         
-            Console.Beep();
+            //Console.Beep();
             return;
 
             //Environment.Exit(0);
