@@ -48,7 +48,7 @@ namespace Mobiera
         DateTime created_on;
         string subscription_operation_status;
         string url;
-   
+        string campaign_id;
 
         public override void InitValues()
         {
@@ -64,15 +64,15 @@ namespace Mobiera
             {
                 RegisterSubscriptionNotification(data);
 
-                if (subscription_operation_status == "Subscribed")
+                if (subscription_operation_status.ToUpper() == "SUBSCRIBED")
                 {
                     DataSet dsData = get_subscription_data();
-
+           
                     if (dsData.Tables[0].Rows.Count == 0)
                     {
                         ErrorAssignation(ERROR_CODE.Mobiera_OperatorProduct_Not_Registered,
-                        "Mobiera Operator_product not registered", 
-                        string.Format("WRONG INFORMATION [operator_product_id={0}]", 
+                        "Mobiera Operator_product not registered",
+                        string.Format("WRONG INFORMATION [operator_product_id={0}]",
                         JsonUtil.AsInteger(data, "subscriptionId")), data.ToString());
                         
                         throw new Exception();
@@ -82,6 +82,7 @@ namespace Mobiera
                     {
                         package_id = DataUtil.AsInteger(dsData.Tables[0].Rows[0], "package_id", false);
 
+                        
                         if (dsData.Tables[1].Rows.Count == 0)
                         {
                             RegisterSuscription();
@@ -99,13 +100,16 @@ namespace Mobiera
                 innerEx = ex;
 
                 if (errorCode == ERROR_CODE.OK)
-                    ErrorAssignation(ERROR_CODE.GENR_Unidentified, ex.Message, ex.StackTrace, data.ToString());
+                    //ErrorAssignation(ERROR_CODE.GENR_Unidentified, ex.Message, ex.StackTrace, data.ToString());
+                    ErrorAssignation(ERROR_CODE.Mobiera_NoDataInTable, " Faltan datos en la tabla  ", ex.StackTrace,data.ToString());
+
             }
             finally
             {
                 if (errorCode != ERROR_CODE.OK)
                 {
                     Insert_Error_log();
+
                 }
             }
         }
@@ -120,12 +124,13 @@ namespace Mobiera
             operator_service_id = JsonUtil.AsString(subscription, "serviceId", "");
             service_identifier_id = JsonUtil.AsString(subscription, "serviceIdentifierId", "");
             msisdn = JsonUtil.AsString(subscription, "endUserId", "");
-            msisdn = msisdn.Substring(5, msisdn.Length - 5);
+            msisdn = msisdn.Substring(8, msisdn.Length - 8);
 
             endUserId = JsonUtil.AsString(subscription, "endUserId", "");
             identifier_id = JsonUtil.AsString(subscription, "identifierId", "");
             identifier_label = JsonUtil.AsString(subscription, "identifierLabel", "");
             identifier_class = JsonUtil.AsString(subscription, "identifierClass", "");
+            
             landing_id = JsonUtil.AsString(subscription, "landingId", "");
             reference_code = JsonUtil.AsString(subscription, "referenceCode", "");
             tracking_param = JsonUtil.AsString(subscription, "trackingParam", "");
@@ -154,10 +159,12 @@ namespace Mobiera
 
             subscription_operation_status = JsonUtil.AsString(subscription, "subscriptionOperationStatus", "");
 
+            campaign_id = JsonUtil.AsString(subscription, "campaignId", "");
+
 
             try
             {
-                SqlParameter[] parameters = new SqlParameter[18];
+                SqlParameter[] parameters = new SqlParameter[19];
 
                 parameters[0] = new SqlParameter("@mobiera_subscription_notification_id", DbType.Int64);
                 parameters[0].Value = mobiera_subscription_notification_id;
@@ -195,6 +202,8 @@ namespace Mobiera
                 parameters[16].Value = 1;
                 parameters[17] = new SqlParameter("@created_on", DbType.DateTime);
                 parameters[17].Value = created_on;
+                parameters[18] = new SqlParameter("@campaign_id", DbType.String);
+                parameters[18].Value = campaign_id;
 
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, PROC_NOTIFY, parameters);
             }
@@ -231,7 +240,7 @@ namespace Mobiera
             }
             catch (Exception ex)
             {
-                ErrorAssignation(ERROR_CODE.Mobiera_NoDataInTable , ex.Message, ex.StackTrace, url);
+                ErrorAssignation(ERROR_CODE.Mobiera_NoDataInTable, ex.Message, ex.StackTrace, dataMessage);
                 throw ex;
             }
         }
@@ -267,13 +276,13 @@ namespace Mobiera
             }
             catch (Exception ex)
             {
-                ErrorAssignation(ERROR_CODE.GENR_NewIDNotGenerated, ex.Message, ex.StackTrace, url);
+                ErrorAssignation(ERROR_CODE.GENR_NewIDNotGenerated, ex.Message, ex.StackTrace, dataMessage);
                 throw ex;
             }
 
             try
             {
-                SqlParameter[] parameters = new SqlParameter[7];
+                SqlParameter[] parameters = new SqlParameter[8];
 
                 parameters[0] = new SqlParameter("@suscription_id", DbType.Int64);
                 parameters[0].Value = suscription_id;
@@ -289,6 +298,8 @@ namespace Mobiera
                 parameters[5].Value = DateTime.UtcNow;
                 parameters[6] = new SqlParameter("@last_attempt_date", DbType.DateTime);
                 parameters[6].Value = DateTime.UtcNow;
+                parameters[7] = new SqlParameter("@entryChannel", DbType.String);
+                parameters[7].Value = "";
 
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, spName, parameters);
 
@@ -312,7 +323,7 @@ namespace Mobiera
 
             catch (Exception ex)
             {
-                ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, url);
+                ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, dataMessage);
                 throw ex;
             }
         }

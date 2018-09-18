@@ -1,14 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMCommon", "..\Source\Common\VMCommon\VMCommon.csproj", "{C269718B-6648-4E2E-910F-50A5381DD908}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otsol.BusinessObject", "..\Source\Libraries\Otsol\Otsol.BusinessObject\Otsol.BusinessObject.csproj", "{D16C856B-F42A-46DE-8516-A451277FCDDE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otsol.DataAccess", "..\Source\Libraries\Otsol\Otsol.DataAccess\Otsol.DataAccess.csproj", "{3604A34F-C878-4BB1-9283-D97368DD0B52}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otsol.Support", "..\Source\Libraries\Otsol\Otsol.Support\Otsol.Support.csproj", "{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobiera.Payment", "Mobiera.Payment\Mobiera.Payment.csproj", "{EC178336-5C7E-44FF-9128-530865A7EC31}"
 	ProjectSection(ProjectDependencies) = postProject
 		{C269718B-6648-4E2E-910F-50A5381DD908} = {C269718B-6648-4E2E-910F-50A5381DD908}
@@ -18,28 +10,20 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobiera.verifyContent", "Mo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mobiera.Subscription", "Mobiera.Subscription\Mobiera.Subscription.csproj", "{2C6C8AC4-FA70-4365-BDA6-72A4700235F0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VMCommon", "..\..\Common\VMCommon\VMCommon.csproj", "{C269718B-6648-4E2E-910F-50A5381DD908}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otsol.Support", "..\..\Libraries\Otsol\Otsol.Support\Otsol.Support.csproj", "{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otsol.BusinessObject", "..\..\Libraries\Otsol\Otsol.BusinessObject\Otsol.BusinessObject.csproj", "{D16C856B-F42A-46DE-8516-A451277FCDDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Otsol.DataAccess", "..\..\Libraries\Otsol\Otsol.DataAccess\Otsol.DataAccess.csproj", "{3604A34F-C878-4BB1-9283-D97368DD0B52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C269718B-6648-4E2E-910F-50A5381DD908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C269718B-6648-4E2E-910F-50A5381DD908}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C269718B-6648-4E2E-910F-50A5381DD908}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C269718B-6648-4E2E-910F-50A5381DD908}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EC178336-5C7E-44FF-9128-530865A7EC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EC178336-5C7E-44FF-9128-530865A7EC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC178336-5C7E-44FF-9128-530865A7EC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -52,6 +36,22 @@ Global
 		{2C6C8AC4-FA70-4365-BDA6-72A4700235F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2C6C8AC4-FA70-4365-BDA6-72A4700235F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2C6C8AC4-FA70-4365-BDA6-72A4700235F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C269718B-6648-4E2E-910F-50A5381DD908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C269718B-6648-4E2E-910F-50A5381DD908}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C269718B-6648-4E2E-910F-50A5381DD908}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C269718B-6648-4E2E-910F-50A5381DD908}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE22EF52-6A3F-4CC9-A331-D4291BE3614A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D16C856B-F42A-46DE-8516-A451277FCDDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3604A34F-C878-4BB1-9283-D97368DD0B52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

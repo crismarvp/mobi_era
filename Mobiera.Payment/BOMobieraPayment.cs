@@ -24,40 +24,36 @@ namespace Mobiera.Payment
             //publisher = new Publisher("dispatchQueue");
         }
         //string queueDestination = "dispatchQueue";
-        string transactionUUID;
+        //string transactionUUID;
         string msisdn;
         string fullDateFormat;
         string shortDateFormat;
-        JObject joAmountTransaction;
         string endUserId;
         Int64 mandate_id;
         Int64 identifier_id;
         string identifier_label;
         string identifier_class;
         int service_identifier_id;
-        JObject joPaymentAmount ;
-        JObject joChargingInformation ;
         string currency;
         string charging_description;
-        JObject joCchargingMetaData;
         string channel;
         Double total_amount_charged;
         Double tax_amount;
         Double amount;
-        Decimal price;
+        //Decimal price;
         string charging_event;
         Int64 server_reference_code;
         string resource_url;
         string transaction_operation_status;
         Int64 mobiera_debit_id;
         Int64 suscription_id;
-        Int64 operator_subscription_id;
-        Byte status;
+        //Int64 operator_subscription_id;
+        //Byte status;
         Int32 service_id;
         Int32 subservice_id;
-        Int32 operator_service_id;
+        //Int32 operator_service_id;
         Int64 mobiera_payment_notification_id = 0;
-        Int64 mobiera_notification_id;
+        //Int64 mobiera_notification_id;
         DateTime created_on;
         String url;
         Int32 price_id;
@@ -69,14 +65,15 @@ namespace Mobiera.Payment
         Int32 operator_product_id;
         Int64 msg_content_id;
         String msg_text;
-        String renew_context;
         String priority;
-        Int32 product_id;
+        //Int32 product_id;
         Int32 package_id;
         string short_number;
-        string high;
-        string low;
         DateTime plannedOn;
+        string charging_service_exception;
+        string charging_policy_exception;
+        Int32 operator_service_id;
+      
 
         public override void InitValues()
         {
@@ -106,7 +103,8 @@ namespace Mobiera.Payment
                 msg_text = DataUtil.AsString(dsDispatch.Tables[0].Rows[0], "msg_text");
                 package_id = DataUtil.AsInteger(dsDispatch.Tables[0].Rows[0], "package_id", false);
                 suscription_id = DataUtil.AsInteger64(dsDispatch.Tables[0].Rows[0], "suscription_id", false);
-                operator_product_id = DataUtil.AsInteger(dsDispatch.Tables[0].Rows[0], "operator_product_id", false);
+                operator_service_id = DataUtil.AsInteger(dsDispatch.Tables[0].Rows[0], "operator_service_id", false);
+                service_identifier_id = DataUtil.AsInteger(dsDispatch.Tables[0].Rows[0], "service_identifier_id", false);
 
                 Int16 status = -1;
                 Registerdebit(data);
@@ -119,7 +117,8 @@ namespace Mobiera.Payment
                 innerEx = ex;
 
                 if (errorCode == ERROR_CODE.OK)
-                    ErrorAssignation(ERROR_CODE.GENR_Unidentified, ex.Message, ex.StackTrace, data.ToString());
+                //ErrorAssignation(ERROR_CODE.GENR_Unidentified, ex.Message, ex.StackTrace, data.ToString());
+                    ErrorAssignation(ERROR_CODE.Mobiera_NoSubscription, " No se ha registrado suscripción para el payment  ", ex.StackTrace, data.ToString());
             }
             finally
             {
@@ -138,7 +137,7 @@ namespace Mobiera.Payment
 
             JObject joAmountTransaction = JsonUtil.AsJObject(data, "amountTransaction");
             msisdn = JsonUtil.AsString(joAmountTransaction, "endUserId", "");
-            msisdn = msisdn.Substring(5, msisdn.Length - 5);
+            msisdn = msisdn.Substring(8, msisdn.Length - 8);
             endUserId = JsonUtil.AsString(joAmountTransaction, "endUserId", "");
             mandate_id = JsonUtil.AsInteger64(joAmountTransaction, "mandateId");
             identifier_id = JsonUtil.AsInteger64(joAmountTransaction, "identifierId");
@@ -161,11 +160,14 @@ namespace Mobiera.Payment
             server_reference_code = JsonUtil.AsInteger64(joAmountTransaction, "serverReferenceCode");
             resource_url = JsonUtil.AsString(joAmountTransaction, "resourceURL", "");
             transaction_operation_status = JsonUtil.AsString(joAmountTransaction, "transactionOperationStatus", "");
-
+            charging_service_exception = JsonUtil.AsString(joAmountTransaction, "chargingServiceException", "");
+            charging_policy_exception = JsonUtil.AsString(joAmountTransaction, "chargingPolicyException", "");
+            
+        
 
             try
             {
-                SqlParameter[] parameters = new SqlParameter[19];
+                SqlParameter[] parameters = new SqlParameter[21];
 
                 parameters[0] = new SqlParameter("@mobiera_payment_notification_id", DbType.Int64);
                 parameters[0].Direction = ParameterDirection.Output;
@@ -205,7 +207,10 @@ namespace Mobiera.Payment
                 parameters[17].Value = transaction_operation_status;
                 parameters[18] = new SqlParameter("@created_by", DbType.Int32);
                 parameters[18].Value = 1;
-
+                parameters[19] = new SqlParameter("@charging_service_exception", DbType.String);
+                parameters[19].Value = charging_service_exception;
+                parameters[20] = new SqlParameter("@charging_policy_exception", DbType.String);
+                parameters[20].Value = charging_policy_exception;
 
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, PROC_NOTIFY, parameters);
                 mobiera_payment_notification_id = DataUtil.AsInteger64(parameters[0].Value, false);
@@ -213,7 +218,7 @@ namespace Mobiera.Payment
             catch (Exception ex)
             {
 
-                ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, data.ToString());
+                
                 ErrorAssignation(ERROR_CODE.GENR_NewIDNotGenerated, ex.Message, ex.StackTrace, url);
                 
                 throw ex;
@@ -266,7 +271,7 @@ namespace Mobiera.Payment
                 parameters[0] = new SqlParameter("@operator_subscription_id", DbType.Int64);
                 parameters[0].Value = mandate_id;
 
-                dsDispatch = GetDataSet(InstanceName, CommandType.StoredProcedure, "spu_get_dispatch_data", parameters);
+                dsDispatch = GetDataSet(InstanceName, CommandType.StoredProcedure, "spu_get_mobiera_dispatch_data", parameters);
             }
             catch (Exception ex)
             {
@@ -294,7 +299,7 @@ namespace Mobiera.Payment
             }
             catch (Exception ex)
             {
-                ErrorAssignation(ERROR_CODE.GENR_NewIDNotGenerated, ex.Message, ex.StackTrace, url);
+                ErrorAssignation(ERROR_CODE.GENR_NewIDNotGenerated, ex.Message, ex.StackTrace, "spu_insert_mobiera_debit");
                 throw ex;
             }
             try
@@ -372,7 +377,7 @@ namespace Mobiera.Payment
             }
             catch (Exception ex)
             {
-                ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, "spu_insert_mobiera_out");
+                ErrorAssignation(ERROR_CODE.GENR_ServerConnectionError, ex.Message, ex.StackTrace, dataMessage);
                 throw ex;
             }
             finally
@@ -387,18 +392,21 @@ namespace Mobiera.Payment
            string diffGmt = ConfigurationManager.AppSettings.Get("diffGmt");
            int IdiffGmt = int.Parse(diffGmt);
            Double DdiffGmt = Double.Parse(diffGmt);
-           string minHour = ConfigurationManager.AppSettings.Get("minHour");
+           
+            string minHour = ConfigurationManager.AppSettings.Get("minHour");
            int IminHour = int.Parse(minHour);
            Double DminHour = Double.Parse(minHour);
            DateTime horaMinUtc = DateTime.UtcNow.Date.AddHours(DminHour);
+           
            int IlocalTime = IminHour + IdiffGmt;
            string localTime = IlocalTime.ToString();
            Double DlocalTime = Double.Parse(localTime);
-           DateTime horaMinLocal = DateTime.Now.Date.AddHours(DlocalTime);
+           DateTime horaMinLocal = (DateTime.UtcNow.AddHours(DdiffGmt)).Date.AddHours(DlocalTime);
 
         try
         {
-             if (created_on.AddHours(DdiffGmt) > DateTime.Now.AddMinutes(-60))
+             //if (created_on.AddHours(DdiffGmt) > DateTime.Now.AddMinutes(-60))
+              if (created_on > DateTime.UtcNow.AddMinutes(-60))
              {
                    priority = "high";
                    plannedOn = DateTime.UtcNow;
@@ -406,19 +414,19 @@ namespace Mobiera.Payment
              else
              {
                    priority = "low";
-
-                   if (created_on.AddHours(DdiffGmt) < horaMinLocal) 
+                   if ((DateTime.UtcNow.AddHours(DdiffGmt)) < horaMinLocal)  
                    {
-                        plannedOn = horaMinUtc;
+                       plannedOn = horaMinUtc;
                    }
-                   else if (created_on.AddHours(DdiffGmt) > horaMinLocal & 
-                            created_on.AddHours(DdiffGmt) < horaMinLocal.AddHours(12))
+
+                   else if (DateTime.UtcNow.AddHours(DdiffGmt) > horaMinLocal &
+                            DateTime.UtcNow.AddHours(DdiffGmt) < horaMinLocal.AddHours(12))
                    {
                         plannedOn = DateTime.UtcNow;
                    }
                    else
                    {
-                        DateTime today = DateTime.Now;
+                        DateTime today = (DateTime.UtcNow.AddHours(DdiffGmt));
                         DateTime nextDay = today.AddDays(1);
                         TimeSpan ts = new TimeSpan((IminHour), 0, 0);
                         plannedOn = nextDay.Date + ts;
@@ -427,7 +435,7 @@ namespace Mobiera.Payment
             }
             catch(Exception ex)
             {
-                ErrorAssignation(ERROR_CODE.GENR_Unidentified, ex.Message, ex.StackTrace, "spu_insert_mobiera_out");
+                ErrorAssignation(ERROR_CODE.GENR_Unidentified, ex.Message, ex.StackTrace, dataMessage);
                 //Insert_Error_log(); 
                 throw ex;
             }
@@ -449,31 +457,33 @@ namespace Mobiera.Payment
 
             try
             {
-                SqlParameter[] parameters = new SqlParameter[12];
+                SqlParameter[] parameters = new SqlParameter[13];
                 parameters[0] = new SqlParameter("@mobiera_dispatch_id", DbType.Int64);
                 parameters[0].Value = mobiera_dispatch_id;
                 parameters[1] = new SqlParameter("@suscription_id", DbType.Int64);
                 parameters[1].Value = suscription_id;
                 parameters[2] = new SqlParameter("@msisdn", DbType.String);
                 parameters[2].Value = msisdn;
-                parameters[3] = new SqlParameter("@operator_product_id", DbType.Int32);
-                parameters[3].Value = operator_product_id;
-                parameters[4] = new SqlParameter("@short_number", DbType.String);
-                parameters[4].Value = short_number;
-                parameters[5] = new SqlParameter("@msg_content_id", DbType.Int64);
-                parameters[5].Value = msg_content_id;
-                parameters[6] = new SqlParameter("@msg_text", DbType.String);
-                parameters[6].Value = msg_text;
-                parameters[7] = new SqlParameter("@priority", DbType.String);
-                parameters[7].Value = priority;
-                parameters[8] = new SqlParameter("@service_id", DbType.Int32);
-                parameters[8].Value = service_id;
-                parameters[9] = new SqlParameter("@subservice_id", DbType.Int32);
-                parameters[9].Value = subservice_id;
-                parameters[10] = new SqlParameter("@created_by", DbType.Int32);
-                parameters[10].Value = 1;
-                parameters[11] = new SqlParameter("@created_on", DbType.DateTime);
-                parameters[11].Value = DateTime.UtcNow;
+                parameters[3] = new SqlParameter("@operator_service_id", DbType.Int32);
+                parameters[3].Value = operator_service_id;
+                parameters[4] = new SqlParameter("@service_identifier_id", DbType.Int32);
+                parameters[4].Value = service_identifier_id;
+                parameters[5] = new SqlParameter("@short_number", DbType.String);
+                parameters[5].Value = short_number;
+                parameters[6] = new SqlParameter("@msg_content_id", DbType.Int64);
+                parameters[6].Value = msg_content_id;
+                parameters[7] = new SqlParameter("@msg_text", DbType.String);
+                parameters[7].Value = msg_text;
+                parameters[8] = new SqlParameter("@priority", DbType.String);
+                parameters[8].Value = priority;
+                parameters[9] = new SqlParameter("@service_id", DbType.Int32);
+                parameters[9].Value = service_id;
+                parameters[10] = new SqlParameter("@subservice_id", DbType.Int32);
+                parameters[10].Value = subservice_id;
+                parameters[11] = new SqlParameter("@created_by", DbType.Int32);
+                parameters[11].Value = 1;
+                parameters[12] = new SqlParameter("@created_on", DbType.DateTime);
+                parameters[12].Value = DateTime.UtcNow;
 
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, PROC, parameters);
             }

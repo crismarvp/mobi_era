@@ -29,7 +29,7 @@ namespace Mobiera.verifyContent
             try
             {
 
-                string PROC = "spu_insert_incoming";
+                string PROC = "spu_insert_mobiera_incoming";
                 ExecuteNonQuery(InstanceName, CommandType.StoredProcedure, PROC);
             }
             catch (Exception ex)

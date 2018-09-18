@@ -118,7 +118,7 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Source\Common\VMCommon\VMCommon.csproj">
+    <ProjectReference Include="..\..\..\Common\VMCommon\VMCommon.csproj">
       <Project>{C269718B-6648-4E2E-910F-50A5381DD908}</Project>
       <Name>VMCommon</Name>
     </ProjectReference>

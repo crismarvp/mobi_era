@@ -29,7 +29,7 @@ namespace Mobiera.Payment
             string URI = ConfigurationManager.AppSettings["activeMqUri"];
 
             Uri connecturi = new Uri(URI);
-            string strDestination = ConfigurationManager.AppSettings["optInQueue"];
+            string strDestination = ConfigurationManager.AppSettings["paymentQueue"];
             Console.WriteLine("About to connect to " + connecturi);
             IConnectionFactory connectionFactory = new NMSConnectionFactory(connecturi);
             IConnection _connection = connectionFactory.CreateConnection();

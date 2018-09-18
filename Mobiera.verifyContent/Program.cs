@@ -19,13 +19,14 @@ namespace Mobiera.verifyContent
         static void Main(string[] args)
         {
 
-            Console.WriteLine("verifyContent");
+            Console.WriteLine("Mobiera.VerifyContent");
             BOVerifyContent bo = new BOVerifyContent();
             bo.verifyContentToSend();
-        
+           
             //Console.Beep();
             return;
-
+            //Console.WriteLine("Press enter to exit...");
+            //Console.ReadLine();
             //Environment.Exit(0);
         }
     }
